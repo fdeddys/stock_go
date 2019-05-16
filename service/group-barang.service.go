@@ -11,10 +11,11 @@ type GroupBarangService struct {
 }
 
 // Add ,,,
-func (groupBarangService *GroupBarangService) Add(groupBarang models.GroupBarang) {
+func (groupBarangService *GroupBarangService) Add(groupBarang models.GroupBarang) models.GroupBarang {
 	db := postgres.GetDbCon()
 
-	db.Create(groupBarang)
+	db.Create(&groupBarang)
+	return groupBarang
 }
 
 // FindByID Param id

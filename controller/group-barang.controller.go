@@ -1,11 +1,14 @@
 package controller
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 
+	"stock/models"
 	"stock/service"
 )
 
@@ -29,5 +32,30 @@ func FindGroupBarangByCode(c *gin.Context) {
 
 	groupBarang := gbService.FindByCode(code)
 	c.JSON(http.StatusOK, gin.H{"result": groupBarang})
+
+}
+
+// AddGroupBarangByCode ...
+func AddGroupBarangByCode(c *gin.Context) {
+
+	var bodyReq models.BodyReqGroupBarang
+
+	bodyRaw, _ := ioutil.ReadAll(c.Request.Body)
+	json.Unmarshal(bodyRaw, &bodyReq)
+
+	// bodyReq := &models.BodyReqGroupBarang{}
+	// groupBarang := c.Bind(bodyReq) // data is left unchanged because c.Request.Body has been used up.
+	// fmt.Println(bodyReq)
+
+	var groupBarang models.GroupBarang
+
+	groupBarang.Code = bodyReq.Code
+	groupBarang.Name = bodyReq.Name
+	groupBarang.UpdatedBy = "admin"
+
+	var gbService service.GroupBarangService
+
+	res := gbService.Add(groupBarang)
+	c.JSON(http.StatusOK, gin.H{"result": res})
 
 }

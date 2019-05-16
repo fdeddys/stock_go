@@ -22,6 +22,7 @@ func SetupRouter() *gin.Engine {
 	{
 		g1.GET("/id/:id", controller.FindGroupBarangByID)
 		g1.GET("/code/:code", controller.FindGroupBarangByCode)
+		g1.POST("", controller.AddGroupBarangByCode)
 	}
 
 	g2 := r.Group("/api/master/barang")
